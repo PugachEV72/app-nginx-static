@@ -34,7 +34,7 @@ jobs:
           if [[ ! -z "$VERSION" ]]; then
             echo "VERSION=$VERSION" >> $GITHUB_ENV
           else
-            echo "VERSION=noUse" >> $GITHUB_ENV
+            echo "VERSION=$VERSION" >> $GITHUB_ENV
 #            echo "No version found in the commit message"
 #            exit 1
           fi
