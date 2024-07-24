@@ -35,7 +35,6 @@ jobs:
             echo "VERSION=$VERSION" >> $GITHUB_ENV
           else
             echo "No version found in the commit message"
-            exit 1
           fi
       - name: Build and push
         uses: docker/build-push-action@v5
