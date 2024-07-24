@@ -13,7 +13,6 @@ env:
   IMAGE_TAG: pugachev72/nginx_custom_01
   RELEASE_NAME: nginx-release
   NAMESPACE: application
-  NOT_VERSION: noUse
 
 jobs:
   build-and-push:
@@ -35,7 +34,8 @@ jobs:
           if [[ ! -z "$VERSION" ]]; then
             echo "VERSION=$VERSION" >> $GITHUB_ENV
           else
-            echo "VERSION=$NOT_VERSION" >> $GITHUB_ENV
+            echo "No version found in the commit message"
+            exit 1
           fi
       - name: Build and push
         uses: docker/build-push-action@v5
