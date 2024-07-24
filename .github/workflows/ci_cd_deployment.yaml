@@ -35,7 +35,7 @@ jobs:
           if [[ ! -z "$VERSION" ]]; then
             echo "VERSION=$VERSION" >> $GITHUB_ENV
           else
-            echo "VERSION=${{ env.NOT_VERSION }}" >> $GITHUB_ENV
+            echo "VERSION=$NOT_VERSION" >> $GITHUB_ENV
           fi
       - name: Build and push
         uses: docker/build-push-action@v5
