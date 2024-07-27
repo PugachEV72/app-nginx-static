@@ -23,7 +23,7 @@ spec:
         app: diplom-app
     spec:
       containers:
-        - image: pugachev72/nginx_custom_01:0.0.4
+        - image: pugachev72/nginx_custom_01:latest
           imagePullPolicy: IfNotPresent
           name: diplom-app
           resources:
