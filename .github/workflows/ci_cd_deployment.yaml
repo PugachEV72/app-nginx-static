@@ -57,9 +57,11 @@ jobs:
         with:
           action: deploy
           manifests: deployment.yaml
-          images: ${{ env.IMAGE_TAG }}
-          tags: ${{ env.VERSION }}
-  
+          namespace: application
+          images: ${{ env.IMAGE_TAG }}:${{ env.VERSION }}
+
+
+#          tags: ${{ env.VERSION }}
 #          :${{ github.sha }}
 #        run: |
 #          sed -i'' -e 's/latest/$VERSION/g' deployment.yaml
