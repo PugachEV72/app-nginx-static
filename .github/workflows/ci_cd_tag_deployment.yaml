@@ -10,8 +10,6 @@ on:
 
 env:
   IMAGE_TAG: pugachev72/nginx_custom_01
-  RELEASE_NAME: nginx-release
-  NAMESPACE: application
 
 jobs:
   build-and-push:
@@ -33,9 +31,8 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Checking version
-        run: |
-          VERSION=${{ steps.meta.outputs.tags }}
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
+        env:
+          VERSION: ${{ steps.meta.outputs.tags }}
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
