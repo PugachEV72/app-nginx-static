@@ -54,5 +54,5 @@ jobs:
           kubeconfig: ${{ secrets.KUBECONFIG }}
       - name: Deploy to Cluster
         run: |
-          sed -i'' -e 's/latest/${{ env.VERSION }}/g' deployment.yaml
+          sed -i'' -e 's/latest/$VERSION/g' deployment.yaml
           kubectl apply -f deployment.yaml
