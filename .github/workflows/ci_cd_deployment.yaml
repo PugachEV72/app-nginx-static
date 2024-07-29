@@ -39,34 +39,33 @@ jobs:
           push: true
           tags: ${{ env.VERSION }}
           labels: ${{ steps.meta.outputs.labels }}
-          build-args: |
-            TAG=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
-            echo "TAG=$TAG" >> $GITHUB_ENV
-      - name: create var
+#          build-args: |
+#            TAG=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
+#            echo "TAG=$TAG" >> $GITHUB_ENV
+      - name: create tag
         run:
           echo "NEW_TAG=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}" >> $GITHUB_ENV
-      - name: read var
+      - name: read tag
         run: |
           echo "Calling var from env using env context: ${{ env.NEW_TAG }}"
           echo "Calling var from env: $NEW_TAG"
 
-#  deploy:
-#    needs: build-and-push
-#    name: Deploy to Kubernetes
-#    runs-on: ubuntu-20.04
-#    steps:
-#      - name: Checkout
-#        uses: actions/checkout@v4
-#      - name: Configure Kubernetes CLI
-#        uses: azure/k8s-set-context@v4
-#        with:
-#          method: kubeconfig
-#          kubeconfig: ${{ secrets.KUBECONFIG }}
-#      - name: Deploy to Cluster
-#        uses: azure/k8s-deploy@v5
-#        with:
-#          action: deploy
-#          manifests: deployment.yaml
-#          namespace: application
-#          images: ${{ env.IMAGE_NAME }}:${{ env.TAG }}
-
+  deploy:
+    needs: build-and-push
+    name: Deploy to Kubernetes
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Configure Kubernetes CLI
+        uses: azure/k8s-set-context@v4
+        with:
+          method: kubeconfig
+          kubeconfig: ${{ secrets.KUBECONFIG }}
+      - name: Deploy to Cluster
+        uses: azure/k8s-deploy@v5
+        with:
+          action: deploy
+          manifests: deployment.yaml
+          namespace: application
+          images: ${{ env.IMAGE_NAME }}:${{ env.NEW_TAG }}
