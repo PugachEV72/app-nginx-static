@@ -58,7 +58,7 @@ jobs:
           action: deploy
           manifests: deployment.yaml
           namespace: application
-          images: ${{ env.IMAGE_TAG }}:${{ env.VERSION }}
+          images: ${{ env.IMAGE_TAG }}:${{ env.VERSION | qute }}
 
 
 #          tags: ${{ env.VERSION }}
