@@ -58,7 +58,7 @@ jobs:
           action: deploy
           manifests: deployment.yaml
           namespace: application
-          images: ${{ env.IMAGE_TAG }}:${{ steps.meta.outputs.tags }}
+          images: ${{ env.IMAGE_TAG }}:"${{ steps.meta.outputs.tags }}"
 
 
 
