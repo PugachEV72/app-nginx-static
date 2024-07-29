@@ -68,4 +68,4 @@ jobs:
           action: deploy
           manifests: deployment.yaml
           namespace: application
-          images: ${{ env.IMAGE_NAME }}:${{ env.NEW_TAG }}
+          images: ${{ env.IMAGE_NAME }}:"${{ env.NEW_TAG }}"
