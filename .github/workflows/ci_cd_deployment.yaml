@@ -62,10 +62,14 @@ jobs:
         with:
           method: kubeconfig
           kubeconfig: ${{ secrets.KUBECONFIG }}
+      - name: read tag
+        run: |
+          echo "Calling var from env using env context: ${{ env.NEW_TAG }}"
+          echo "Calling var from env: $NEW_TAG"
       - name: Deploy to Cluster
         uses: azure/k8s-deploy@v5
         with:
           action: deploy
           manifests: deployment.yaml
           namespace: application
-          images: ${{ env.IMAGE_NAME }}:"${{ env.NEW_TAG }}"
+          images: ${{ env.IMAGE_NAME }}:latest
