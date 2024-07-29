@@ -42,10 +42,13 @@ jobs:
           build-args: |
             TAG=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
             echo "TAG=$TAG" >> $GITHUB_ENV
+      - name: create var
+        run:
+          echo "NEW_TAG=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}" >> $GITHub_ENV
       - name: read var
         run: |
-          echo "Calling var from env using env context: '${{ env.TAG }}'"
-          echo "Calling var from env: '$TAG'"
+          echo "Calling var from env using env context: ${{ env.NEW_TAG }}"
+          echo "Calling var from env: $NEW_TAG"
 
 #  deploy:
 #    needs: build-and-push
