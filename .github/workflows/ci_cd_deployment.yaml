@@ -9,7 +9,7 @@ on:
       - 'v*'
 
 env:
-  IMAGE_TAG: pugachev72/nginx_custom_01
+  IMAGE_NAME: pugachev72/nginx_custom_01
 
 jobs:
   build-and-push:
@@ -22,7 +22,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.IMAGE_TAG }}
+          images: ${{ env.IMAGE_NAME }}
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
@@ -30,10 +30,6 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-#      - name: Extract version from docker metadata
-#        run: |
-#          VERSION=${{ steps.meta.outputs.tags }}
-#          echo "VERSION=$VERSION" >> $GITHUB_ENV
       - name: Build and push
         env:
           VERSION: ${{ steps.meta.outputs.tags }}
@@ -43,6 +39,10 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ${{ env.VERSION }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            TAG=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
+            echo "TAG=$TAG" >> $GITHUB_ENV
 
   deploy:
     needs: build-and-push
@@ -62,12 +62,5 @@ jobs:
           action: deploy
           manifests: deployment.yaml
           namespace: application
-          images: ${{ env.IMAGE_TAG }}:"${{ env.DOCKER_METADATA_OUTPUT_VERSION }}"
+          images: ${{ env.IMAGE_NAME }}:${{ env.TAG }}
 
-
-
-#          tags: ${{ env.VERSION }}
-#          :${{ github.sha }}
-#        run: |
-#          sed -i'' -e 's/latest/$VERSION/g' deployment.yaml
-#          kubectl apply -f deployment.yaml
