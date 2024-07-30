@@ -1,6 +1,6 @@
-# Версия 3
+# Версия 7
 
-name: diplom_app_0
+name: push_tag_app
 
 on:
   push:
@@ -39,16 +39,6 @@ jobs:
           push: true
           tags: ${{ env.VERSION }}
           labels: ${{ steps.meta.outputs.labels }}
-#          build-args: |
-#            TAG=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
-#            echo "TAG=$TAG" >> $GITHUB_ENV
-#      - name: create tag
-#        run:
-#          echo "NEW_TAG=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}" >> $GITHUB_ENV
-#      - name: read tag
-#        run: |
-#          echo "Calling var from env using env context: ${{ env.NEW_TAG }}"
-#          echo "Calling var from env: $NEW_TAG"
 
   deploy:
     needs: build-and-push
@@ -70,10 +60,6 @@ jobs:
       - name: create tag
         run:
           echo "NEW_TAG=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}" >> $GITHUB_ENV
-      - name: read tag
-        run: |
-          echo "Calling var from env using env context: ${{ env.NEW_TAG }}"
-          echo "Calling var from env: $NEW_TAG"
       - name: Deploy to Cluster
         uses: azure/k8s-deploy@v5
         with:

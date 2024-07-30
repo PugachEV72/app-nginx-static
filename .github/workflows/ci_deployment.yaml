@@ -1,6 +1,6 @@
 # Версия 1
 
-name: build_app
+name: any_commit_app
 
 on:
   push:
